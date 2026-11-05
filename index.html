@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sans Filtre : pas de filtre, juste du vrai</title>
+<meta name="description" content="Conseils peau, corps et bien-être, testés et expliqués sans filtre, pour les petits budgets.">
+<style>
+/* ===== 1. Palette et typographies (variables) ===== */
+:root{
+  --creme:#FFFFFF;      /* blanc : fond principal */
+  --blanc:#FFF9F5;      /* crème : cartes */
+  --cacao:#49343A;      /* brun prune : titres et texte */
+  --terracotta:#D94F7B; /* rose framboise : boutons et accents */
+  --lien:#B8325E;       /* framboise foncé : liens et textes (contraste AA) */
+  --terra-clair:#F2A78B;/* pêche : petits détails */
+  --sauge:#F2B7C8;      /* rose poudré : fonds secondaires */
+  --sauge-fonce:#8F2A4C;/* prune framboise : petits textes */
+  --bord:#EDD3D6;
+  --titre:'Playfair Display',Georgia,'Times New Roman',serif;
+  --texte:'DM Sans',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light;
+}
+
+/* ===== 2. Base ===== */
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{margin:0;background:var(--creme);color:var(--cacao);font-family:var(--texte);font-size:1.0625rem;line-height:1.6}
+img,svg{max-width:100%}
+a{color:var(--lien);text-underline-offset:.2em}
+:focus-visible{outline:3px solid var(--sauge-fonce);outline-offset:3px;border-radius:4px}
+.conteneur{width:min(100% - 2.5rem,68rem);margin-inline:auto}
+h1,h2,h3{font-family:var(--titre);line-height:1.15;margin:0}
+p{margin:0}
+.lien-evitement{position:absolute;left:-999px;top:0;background:var(--cacao);color:var(--creme);padding:.6rem 1rem;z-index:20}
+.lien-evitement:focus{left:.5rem;top:.5rem}
+
+/* ===== 3. En-tête et navigation ===== */
+.entete{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--creme);border-bottom:1px solid var(--bord)}
+.entete .conteneur{display:flex;align-items:center;justify-content:space-between;min-height:4rem}
+.logo{font-family:var(--titre);font-weight:700;font-size:1.4rem;color:var(--cacao);text-decoration:none}
+.btn-menu{display:none;background:none;border:1px solid var(--bord);color:var(--cacao);font:inherit;font-weight:500;padding:.5rem .9rem;border-radius:999px;cursor:pointer}
+.nav ul{list-style:none;margin:0;padding:0;display:flex;gap:1.6rem}
+.nav a{color:var(--cacao);text-decoration:none;font-weight:500;padding:.4rem 0;border-bottom:2px solid transparent}
+.nav a:hover{border-bottom-color:var(--terracotta)}
+@media (max-width:760px){
+  .btn-menu{display:inline-block}
+  .nav{display:none;position:absolute;left:0;right:0;top:100%;background:var(--creme);border-bottom:1px solid var(--bord)}
+  .nav.ouvert{display:block}
+  .nav ul{flex-direction:column;gap:0;padding:.5rem 1.25rem 1rem}
+  .nav a{display:block;padding:.8rem 0}
+}
+
+/* ===== 4. Accueil (hero) ===== */
+.hero{padding:clamp(2.5rem,7vw,5.5rem) 0}
+.hero .conteneur{display:grid;gap:2.5rem;align-items:center}
+@media (min-width:880px){.hero .conteneur{grid-template-columns:1.15fr .85fr;gap:4rem}}
+.hero h1{font-size:clamp(2.4rem,7.5vw,4.4rem);font-weight:600;letter-spacing:-.01em}
+.hero .intro{margin-top:1.4rem;max-width:34rem;font-size:1.15rem}
+.actions{margin-top:2rem;display:flex;flex-wrap:wrap;gap:.8rem}
+.btn{display:inline-block;font-size:1.2rem;padding:.75rem 1.5rem;border-radius:999px;font-weight:700;text-decoration:none;border:2px solid var(--terracotta)}
+.btn-plein{background:var(--terracotta);color:#fff}
+.btn-plein:hover{filter:brightness(.92)}
+.btn-contour{color:var(--lien);background:transparent}
+.btn-contour:hover{background:var(--blanc)}
+
+/* ===== 5. Sections ===== */
+section{padding:clamp(2.5rem,6vw,4.5rem) 0}
+.titre-section{font-size:clamp(1.7rem,4.5vw,2.4rem);max-width:30rem}
+.sous-titre{margin-top:.8rem;max-width:36rem}
+
+.parcours{list-style:none;margin:2.2rem 0 0;padding:0;display:grid;gap:1.1rem}
+@media (min-width:880px){.parcours{grid-template-columns:repeat(3,1fr)}}
+.parcours li{background:var(--blanc);border-left:5px solid var(--terra-clair);border-radius:.4rem 1rem 1rem .4rem;padding:1.3rem 1.4rem}
+.parcours li.actif{border-left-color:var(--terracotta)}
+.parcours h3{font-size:1.3rem;margin-bottom:.5rem}
+.parcours .etat{display:inline-block;margin-top:.9rem;font-size:.88rem;font-weight:700;color:var(--sauge-fonce)}
+
+.bandeau{background:var(--sauge)}
+.promesses{margin:2rem 0 0;padding:0;list-style:none;display:grid;gap:1.4rem}
+@media (min-width:700px){.promesses{grid-template-columns:1fr 1fr;gap:1.8rem 3rem}}
+.promesses strong{display:block;font-family:var(--titre);font-size:1.15rem;margin-bottom:.2rem}
+
+.budget .conteneur{display:grid;gap:1.5rem}
+@media (min-width:880px){.budget .conteneur{grid-template-columns:1fr auto;align-items:end}}
+.budget p{max-width:36rem}
+
+/* Fiche ingrédient (modèle complet) */
+.ingredient{margin-top:2.2rem;background:var(--blanc);border:1px solid var(--bord);border-radius:1.25rem;padding:clamp(1.3rem,4vw,2.2rem);max-width:46rem}
+.ingredient h3{font-size:clamp(1.6rem,4vw,2rem);margin:.35rem 0 .5rem}
+.ingredient .technique{display:block;font-family:var(--texte);font-size:.95rem;font-weight:500;color:var(--sauge-fonce);margin-top:.25rem}
+.ingredient .resume{max-width:34rem}
+.ingredient .details{margin:1.4rem 0 0;display:grid;grid-template-columns:1fr;gap:.2rem 1.2rem;font-size:.98rem}
+@media (min-width:640px){.ingredient .details{grid-template-columns:11rem 1fr;gap:.7rem 1.2rem}}
+.ingredient dt{color:var(--sauge-fonce);font-weight:700;margin-top:.7rem}
+@media (min-width:640px){.ingredient dt{margin-top:0}}
+.ingredient dd{margin:0}
+.ingredient h4{font-family:var(--titre);font-size:1.15rem;margin:1.6rem 0 .5rem}
+.ingredient ul{margin:0;padding-left:1.2rem}
+.ingredient li+li{margin-top:.3rem}
+.ingredient .verif{margin-top:1.4rem;padding-top:1rem;border-top:1px dashed var(--bord);font-size:.88rem;color:var(--sauge-fonce)}
+
+/* Ma routine (matin / soir) */
+.routine{display:grid;gap:1.4rem;margin-top:2.2rem}
+@media (min-width:880px){.routine{grid-template-columns:1.4fr 1fr;align-items:start}}
+.moment{background:var(--blanc);border:1px solid var(--bord);border-radius:1.25rem;padding:1.4rem 1.5rem}
+.moment h3{font-size:1.45rem;margin-bottom:1rem}
+.etapes{list-style:none;margin:0;padding:0;counter-reset:etape;display:grid;gap:.85rem}
+.etapes li{counter-increment:etape;display:grid;grid-template-columns:2rem 1fr;gap:.2rem .8rem;font-size:.98rem}
+.etapes li::before{content:counter(etape);grid-row:span 2;width:2rem;height:2rem;border-radius:50%;background:var(--sauge);color:var(--sauge-fonce);display:grid;place-items:center;font-weight:700;font-size:.9rem}
+.etapes .role{font-weight:700}
+.etapes .produit{color:var(--cacao)}
+.etapes .cond{font-size:.88rem;color:var(--sauge-fonce)}
+.note-routine{margin-top:1.6rem;max-width:40rem;font-size:.95rem}
+
+/* Grille des autres fiches */
+.grille-fiches{display:grid;gap:1.4rem;margin-top:1.4rem}
+@media (min-width:880px){.grille-fiches{grid-template-columns:1fr 1fr;align-items:start}}
+.grille-fiches .ingredient{margin-top:0;max-width:none}
+.grille-fiches .ingredient .details{grid-template-columns:1fr;gap:.2rem}
+.grille-fiches .ingredient dt{margin-top:.7rem}
+.grille-fiches .ingredient h3{font-size:1.45rem}
+
+/* Guide type de peau */
+.types{list-style:none;margin:2.2rem 0 0;padding:0;display:grid;gap:1.2rem}
+@media (min-width:640px){.types{grid-template-columns:1fr 1fr}}
+@media (min-width:1000px){.types{grid-template-columns:repeat(4,1fr)}}
+.carte-type{background:var(--blanc);border:1px solid var(--bord);border-radius:1.25rem;padding:1.2rem;display:flex;flex-direction:column;gap:.7rem;height:100%}
+.carte-type svg{width:100%;max-width:11rem;height:auto;margin-inline:auto;display:block}
+.carte-type h3{font-size:1.4rem}
+.carte-type ul{margin:0;padding-left:1.1rem;font-size:.95rem}
+.carte-type .btn{margin-top:auto;text-align:center}
+.legende{font-size:.85rem;color:var(--sauge-fonce)}
+.pastille{display:inline-block;width:1rem;height:1rem;border-radius:50%;border:1px solid var(--cacao);vertical-align:-.15em;margin-right:.5rem}
+.p-gras{background:#D94F7B}.p-norm{background:#F2B7C8}
+.p-sec{background:repeating-linear-gradient(45deg,#F2A78B 0 3px,#D94F7B 3px 5px)}
+.visage-fond{fill:var(--blanc);stroke:var(--cacao);stroke-width:2.5}
+.traits{fill:none;stroke:var(--cacao);stroke-width:2.5;stroke-linecap:round}
+.z-gras{fill:#D94F7B;fill-opacity:.55}.z-normal{fill:#F2B7C8;fill-opacity:.8}.z-sec{fill:url(#hachures)}
+button.btn{font-family:inherit;cursor:pointer}
+.quiz{margin-top:1.4rem;background:var(--blanc);border:1px solid var(--bord);border-radius:1.25rem;padding:1.4rem;max-width:40rem}
+.quiz fieldset{border:0;margin:0;padding:0;display:grid;gap:.6rem}
+.quiz legend{font-family:var(--titre);font-size:1.3rem;margin-bottom:.8rem}
+.opt{font:inherit;text-align:left;background:var(--creme);color:var(--cacao);border:2px solid var(--bord);border-radius:.9rem;padding:.8rem 1rem;cursor:pointer;min-height:2.75rem}
+.opt:hover{border-color:var(--terracotta)}
+.quiz-etape,.quiz-note{font-size:.88rem;color:var(--sauge-fonce)}
+.resultat{display:flex;flex-wrap:wrap;align-items:center;gap:.8rem;margin:.8rem 0}
+.distinction{margin-top:2rem;max-width:44rem;background:var(--sauge);border-radius:1rem;padding:1.2rem 1.4rem}
+.distinction ul{margin:.6rem 0 0;padding-left:1.1rem}
+
+.avis-amies{margin-top:1.2rem;max-width:44rem;border:2px dashed var(--terra-clair);border-radius:1rem;padding:1.2rem 1.4rem}
+.avis-amies ul{margin:.6rem 0 0;padding-left:1.1rem}
+.avis-amies small{display:block;margin-top:.7rem;color:var(--sauge-fonce)}
+
+.titre-temo{font-size:1.5rem;margin-top:2.2rem}
+.note-temo{margin-top:.5rem;max-width:40rem;font-size:.95rem;color:var(--sauge-fonce)}
+.temoignages{display:grid;gap:1.1rem;margin-top:1.2rem}
+@media (min-width:880px){.temoignages{grid-template-columns:1fr 1fr;align-items:start}}
+.temo{background:var(--blanc);border:1px solid var(--bord);border-radius:1.25rem;padding:1.2rem 1.4rem;font-size:.98rem}
+.temo-tete{font-family:var(--titre);font-weight:600;font-size:1.1rem;margin-bottom:.5rem}
+.temo p+p{margin-top:.5rem}
+.temo strong{color:var(--sauge-fonce)}
+
+
+/* ===== 6. Pied de page ===== */
+.pied{border-top:1px solid var(--bord);padding:2.5rem 0 2rem;font-size:.95rem}
+.pied ul{list-style:none;margin:1rem 0 0;padding:0;display:flex;flex-wrap:wrap;gap:.4rem 1.6rem}
+.pied .avertissement{margin-top:1.4rem;max-width:40rem}
+
+/* ===== Pages (onglets) ===== */
+[tabindex="-1"]:focus{outline:none}
+.js .page{display:none}.js .page.actif{display:block}
+.nav a[aria-current=page]{border-bottom-color:var(--terracotta)}
+.hero .conteneur{display:block}
+.hero h1,.hero .intro{max-width:40rem}
+.hero{padding-bottom:clamp(1.5rem,4vw,2.5rem)}
+.onglets{list-style:none;display:flex;flex-wrap:wrap;gap:.5rem;margin:0 0 1.6rem;padding:0}
+.onglets a{display:inline-block;padding:.5rem 1.1rem;border:1px solid var(--bord);border-radius:999px;text-decoration:none;color:var(--cacao);font-weight:500;background:var(--creme)}
+.onglets a:hover{border-color:var(--terracotta)}
+.onglets a[aria-current=page]{background:var(--lien);border-color:var(--lien);color:#fff}
+.moment.seul{max-width:40rem;margin-top:1.6rem}
+.lien-quiz{margin-top:1.6rem;font-size:.95rem}
+.cheveux{fill:var(--cacao)}
+.levres{fill:#D94F7B;fill-opacity:.35;stroke:var(--cacao);stroke-width:2.5;stroke-linejoin:round}
+.yeux{fill:var(--cacao);stroke:none}
+.listes{display:grid;gap:1.4rem;margin-top:1.8rem}
+@media (min-width:880px){.listes{grid-template-columns:1fr 1fr;align-items:start}}
+.listes .moment ul{margin:0;padding-left:1.1rem;display:grid;gap:.6rem;font-size:.98rem}
+.a-completer{color:var(--sauge-fonce);font-style:italic}
+.ingredient p.technique{font-size:.95rem;font-weight:500;color:var(--sauge-fonce);margin:0}
+.listes small{color:var(--sauge-fonce)}
+
+/* ===== Style : navigation en gras, logo, animations ===== */
+.nav a{font-weight:700;transition:border-color .25s,color .25s}
+.nav a:hover{color:var(--lien)}
+.logo{display:inline-flex;align-items:center;gap:.55rem}
+.logo-mark{width:2.2rem;height:2.2rem;flex:none;transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
+.logo:hover .logo-mark{transform:rotate(-10deg) scale(1.12)}
+.hero{position:relative;overflow:hidden}
+.hero .conteneur{position:relative;z-index:1}
+.hero::before,.hero::after{content:"";position:absolute;border-radius:50%;pointer-events:none}
+.hero::before{width:24rem;height:24rem;right:-7rem;top:-6rem;background:radial-gradient(circle,#F2B7C8 0,rgba(242,183,200,0) 70%);opacity:.7}
+.hero::after{width:18rem;height:18rem;right:12%;bottom:-1rem;background:radial-gradient(circle,#F2A78B 0,rgba(242,167,139,0) 70%);opacity:.45}
+.btn,.onglets a,.opt{transition:transform .2s ease,filter .2s,background .2s,border-color .2s}
+.btn:hover,.onglets a:hover{transform:translateY(-2px)}
+.carte-type,.ingredient,.moment,.parcours li,.temo,.avis-amies{transition:transform .3s ease,box-shadow .3s ease}
+.carte-type:hover,.ingredient:hover,.parcours li:hover{transform:translateY(-5px);box-shadow:0 16px 30px -18px rgba(217,79,123,.55)}
+.carte-type svg{transition:transform .4s cubic-bezier(.3,1.4,.5,1)}
+.carte-type:hover svg{transform:scale(1.06) rotate(-1.5deg)}
+@keyframes monte{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes flotte{0%,100%{transform:translate(0,0)}50%{transform:translate(-18px,14px)}}
+@media (prefers-reduced-motion:no-preference){
+  .page.actif .conteneur>*{animation:monte .6s cubic-bezier(.2,.7,.2,1) both}
+  .page.actif .conteneur>*:nth-child(2){animation-delay:.07s}
+  .page.actif .conteneur>*:nth-child(3){animation-delay:.14s}
+  .page.actif .conteneur>*:nth-child(4){animation-delay:.21s}
+  .page.actif .conteneur>*:nth-child(n+5){animation-delay:.28s}
+  .page.actif :is(.types,.grille-fiches,.parcours,.routine,.promesses)>*{animation:monte .65s cubic-bezier(.2,.7,.2,1) both}
+  .page.actif :is(.types,.grille-fiches,.parcours,.routine,.promesses)>*:nth-child(1){animation-delay:.15s}
+  .page.actif :is(.types,.grille-fiches,.parcours,.routine,.promesses)>*:nth-child(2){animation-delay:.25s}
+  .page.actif :is(.types,.grille-fiches,.parcours,.routine,.promesses)>*:nth-child(3){animation-delay:.35s}
+  .page.actif :is(.types,.grille-fiches,.parcours,.routine,.promesses)>*:nth-child(n+4){animation-delay:.45s}
+  .hero::before{animation:flotte 11s ease-in-out infinite}
+  .hero::after{animation:flotte 14s ease-in-out infinite reverse}
+}
+
+</style>
+<script>document.documentElement.className+=' js'</script>
+</head>
+<body>
+<a class="lien-evitement" href="#contenu">Aller au contenu</a>
+
+<header class="entete">
+  <div class="conteneur">
+    <a class="logo" href="#accueil">Sans Filtre</a>
+    <button class="btn-menu" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav class="nav" id="nav" aria-label="Navigation principale">
+      <ul>
+        <li><a href="#type-de-peau">Type de peau</a></li>
+        <li><a href="#peau-normale" data-groupe="peau">Routines</a></li>
+        <li><a href="#decryptage">Décryptage</a></li>
+        <li><a href="#produits-testes">Produits testés</a></li>
+        <li><a href="#a-propos">À propos</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="contenu">
+
+  <div class="page" id="accueil">
+  <section class="hero" aria-labelledby="titre-hero">
+    <div class="conteneur">
+      <h1 id="titre-hero">Pas de filtre, juste du vrai.</h1>
+      <p class="intro">Des conseils peau et corps expliqués simplement, des produits vraiment testés et des routines pensées pour les petits budgets d’étudiante. Sans jugement, sans promesse miracle.</p>
+      <div class="actions">
+        <a class="btn btn-plein" href="#type-de-peau">Trouver mon type de peau</a>
+        <a class="btn btn-contour" href="#peau-normale">Voir les routines</a>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="titre-parcours">
+    <div class="conteneur">
+      <h2 class="titre-section" id="titre-parcours">On avance étape par étape</h2>
+      <p class="sous-titre">Le site grandit avec toi : on commence par le visage, puis on élargit.</p>
+      <ul class="parcours">
+        <li class="actif">
+          <h3>Le visage</h3>
+          <p>Routines pour peau grasse, mixte ou à tendance acnéique, guide des ingrédients et comparatifs à petits prix.</p>
+          <span class="etat">En cours de préparation</span>
+        </li>
+        <li>
+          <h3>Le corps et les odeurs</h3>
+          <p>Hydratation, exfoliation, kératose pilaire, poils incarnés, déodorants et brumes.</p>
+          <span class="etat">Prochaine étape</span>
+        </li>
+        <li>
+          <h3>L’hygiène intime</h3>
+          <p>Comprendre son corps, les bonnes habitudes et savoir quand consulter, avec des informations médicales vérifiées.</p>
+          <span class="etat">À venir</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="budget" id="budget" aria-labelledby="titre-budget">
+    <div class="conteneur">
+      <div>
+        <h2 class="titre-section" id="titre-budget">Des routines qui respectent ton budget</h2>
+        <p class="sous-titre">Pas besoin de dix produits. Chaque routine indiquera le coût total estimé et les alternatives moins chères.</p>
+      </div>
+      <a class="btn btn-contour" href="#routines">Découvrir les routines</a>
+    </div>
+  </section>
+  </div>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+    <path id="cheveux" class="cheveux" d="M22 132C8 40 54 10 100 10s92 30 78 122c-2-34-10-58-18-72L40 60c-8 14-16 38-18 72z"/>    <pattern id="hachures" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="7" height="7" fill="#F2A78B" fill-opacity=".45"/><line x1="0" y1="0" x2="0" y2="7" stroke="#D94F7B" stroke-width="2"/></pattern>
+    <ellipse id="visage-fond" class="visage-fond" cx="100" cy="122" rx="68" ry="92"/>
+    <g id="traits" class="traits"><path d="M64 84q12-9 24-3M112 81q12-6 24 3"/><path d="M68 106q11-10 22 0q-11 8-22 0zM110 106q11-10 22 0q-11 8-22 0z"/><path d="M100 112v26q-8 5-11 1M100 138q8 4 11 0"/></g>
+    <g id="yeux" class="yeux"><circle cx="79" cy="106" r="3.2"/><circle cx="121" cy="106" r="3.2"/></g>
+    <path id="levres" class="levres" d="M84 171q16-9 32 0q-16 12-32 0z"/>
+    <ellipse id="z-tout" cx="100" cy="122" rx="60" ry="84"/>
+    <ellipse id="z-front" cx="100" cy="58" rx="46" ry="20"/>
+    <ellipse id="z-nez" cx="100" cy="130" rx="11" ry="30"/>
+    <ellipse id="z-menton" cx="100" cy="196" rx="26" ry="15"/>
+    <g id="z-joues"><ellipse cx="62" cy="140" rx="20" ry="24"/><ellipse cx="138" cy="140" rx="20" ry="24"/></g>
+  </defs></svg>
+
+  <section class="page" id="type-de-peau" aria-labelledby="titre-type">
+    <div class="conteneur">
+      <h2 class="titre-section" id="titre-type">Quel est ton type de peau ?</h2>
+      <p class="sous-titre">Apprends à reconnaître ta peau pour choisir une routine qui lui correspond vraiment.</p>
+
+      <ul class="types">
+        <li><article class="carte-type">
+          <svg viewBox="0 0 200 240" role="img" aria-labelledby="t-n"><title id="t-n">Visage de face, entièrement en rose poudré : aucune zone particulièrement grasse ou sèche</title><use href="#cheveux"/><use href="#visage-fond"/><use href="#z-tout" class="z-normal"/><use href="#yeux"/><use href="#traits"/><use href="#levres"/></svg>
+          <h3>Peau normale</h3>
+          <p>Équilibrée : ni trop grasse, ni trop sèche.</p>
+          <ul><li>Peau confortable, grain fin</li><li>Peu de brillance</li><li>Rarement des imperfections</li></ul>
+          <p class="legende"><span class="pastille p-norm"></span>Zones équilibrées</p>
+          <a class="btn btn-plein" href="#peau-normale" aria-label="Découvrir ma routine pour peau normale">Découvrir ma routine</a>
+        </article></li>
+        <li><article class="carte-type">
+          <svg viewBox="0 0 200 240" role="img" aria-labelledby="t-g"><title id="t-g">Visage de face avec le front, le nez, le menton et les joues colorés en framboise : zones pouvant présenter un excès de sébum</title><use href="#cheveux"/><use href="#visage-fond"/><use href="#z-front" class="z-gras"/><use href="#z-nez" class="z-gras"/><use href="#z-menton" class="z-gras"/><use href="#z-joues" class="z-gras"/><use href="#yeux"/><use href="#traits"/><use href="#levres"/></svg>
+          <h3>Peau grasse</h3>
+          <p>Elle produit un excès de sébum sur tout le visage.</p>
+          <ul><li>Brille vite dans la journée</li><li>Pores visibles</li><li>Imperfections plus fréquentes</li></ul>
+          <p class="legende"><span class="pastille p-gras"></span>Zones pouvant présenter un excès de sébum</p>
+          <a class="btn btn-plein" href="#peau-grasse" aria-label="Découvrir ma routine pour peau grasse">Découvrir ma routine</a>
+        </article></li>
+        <li><article class="carte-type">
+          <svg viewBox="0 0 200 240" role="img" aria-labelledby="t-m"><title id="t-m">Visage de face avec la zone T (front, nez, menton) en framboise et les joues en rose poudré</title><use href="#cheveux"/><use href="#visage-fond"/><use href="#z-joues" class="z-normal"/><use href="#z-front" class="z-gras"/><use href="#z-nez" class="z-gras"/><use href="#z-menton" class="z-gras"/><use href="#yeux"/><use href="#traits"/><use href="#levres"/></svg>
+          <h3>Peau mixte</h3>
+          <p>Grasse sur la zone T, normale ou sèche sur les joues.</p>
+          <ul><li>Front, nez et menton qui brillent</li><li>Joues confortables ou sèches</li><li>Pores plus visibles sur le nez</li></ul>
+          <p class="legende"><span class="pastille p-gras"></span>Zone T <span class="pastille p-norm"></span>Joues</p>
+          <a class="btn btn-plein" href="#peau-mixte" aria-label="Découvrir ma routine pour peau mixte">Découvrir ma routine</a>
+        </article></li>
+        <li><article class="carte-type">
+          <svg viewBox="0 0 200 240" role="img" aria-labelledby="t-s"><title id="t-s">Visage de face avec le front et les joues hachurés : zones pouvant être sèches et tirailler</title><use href="#cheveux"/><use href="#visage-fond"/><use href="#z-front" class="z-sec"/><use href="#z-joues" class="z-sec"/><use href="#yeux"/><use href="#traits"/><use href="#levres"/></svg>
+          <h3>Peau sèche</h3>
+          <p>Elle manque de lipides et tiraille facilement.</p>
+          <ul><li>Tiraillements, surtout après le nettoyage</li><li>Aspect mat, parfois des petites plaques</li><li>Pores fins</li></ul>
+          <p class="legende"><span class="pastille p-sec"></span>Zones pouvant tirailler</p>
+          <a class="btn btn-plein" href="#peau-seche" aria-label="Découvrir ma routine pour peau sèche">Découvrir ma routine</a>
+        </article></li>
+      </ul>
+
+      <aside class="distinction" aria-label="Ne pas confondre">
+        <strong>Trois choses à ne pas confondre</strong>
+        <ul>
+          <li><b>Le type de peau</b> : la quantité de sébum que ta peau produit, plutôt stable.</li>
+          <li><b>La sensibilité</b> : ta peau réagit facilement (rougeurs, picotements).</li>
+          <li><b>La déshydratation</b> : un manque d’eau, temporaire, possible même avec une peau grasse.</li>
+        </ul>
+      </aside>
+
+      <div class="actions">
+        <button type="button" class="btn btn-contour" id="ouvrir-quiz" aria-expanded="false" aria-controls="quiz">Je ne connais pas mon type de peau</button>
+      </div>
+      <div class="quiz" id="quiz" hidden>
+        <p class="quiz-note">Questionnaire indicatif : ce n’est pas un diagnostic médical. Tes réponses restent sur ton appareil et ne sont jamais envoyées ni enregistrées.</p>
+        <div id="quiz-corps" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="peau-normale" aria-labelledby="r-n"><div class="conteneur">
+    <ul class="onglets" aria-label="Choisir un type de peau"><li><a href="#peau-normale" aria-current="page">Peau normale</a></li><li><a href="#peau-grasse">Peau grasse</a></li><li><a href="#peau-mixte">Peau mixte</a></li><li><a href="#peau-seche">Peau sèche</a></li></ul>
+    <h2 class="titre-section" id="r-n">Routine pour peau normale</h2>
+    <p class="sous-titre">C’est ma routine, utilisée depuis plus d’un an. C’est mon vécu, pas un conseil médical : chaque peau réagit différemment.</p>
+    <div class="routine">
+      <div class="moment">
+        <h3>Le matin</h3>
+        <ol class="etapes"><li><span class="role">Nettoyer</span><span class="produit">CeraVe, gel nettoyant peaux grasses à normales</span></li><li><span class="role">Tonique</span><span class="produit">Aromazone, lotion niacinamide 5 % + zinc + acide hyaluronique</span></li><li><span class="role">Hydrater</span><span class="produit">Aromazone, sérum d’acide hyaluronique <span class="cond">(je laisse sécher)</span></span></li><li><span class="role">Traiter</span><span class="produit">Aromazone, sérum vitamine C 10 % + astaxanthine</span></li><li><span class="role">Matifier</span><span class="produit">Avène, Cleanance Aqua-gel matifiant</span></li><li><span class="role">Apaiser</span><span class="produit">La Roche-Posay, Cicaplast Gel B5 <span class="cond">(si j’ai quelques boutons)</span></span></li><li><span class="role">Protéger</span><span class="produit">Avène, Cleanance anti-imperfections (crème solaire)</span></li></ol>
+      </div>
+      <div class="moment">
+        <h3>Le soir</h3>
+        <ol class="etapes"><li><span class="role">Nettoyer</span><span class="produit">CeraVe, gel nettoyant peaux grasses à normales</span></li><li><span class="role">Tonique</span><span class="produit">Aromazone, lotion niacinamide 5 % + zinc + acide hyaluronique</span></li><li><span class="role">Hydrater</span><span class="produit">Aromazone, sérum d’acide hyaluronique <span class="cond">(je laisse sécher)</span></span></li><li><span class="role">Traiter</span><span class="produit">Aromazone, sérum vitamine C 10 % + astaxanthine</span></li><li><span class="role">Matifier</span><span class="produit">Avène, Cleanance Aqua-gel matifiant</span></li><li><span class="role">Apaiser</span><span class="produit">La Roche-Posay, Cicaplast Gel B5 <span class="cond">(si j’ai quelques boutons)</span></span></li></ol>
+      </div>
+    </div>
+    <p class="note-routine"><strong>Budget :</strong> environ 60 € par mois, mais en achetant les produits d’un coup, ils durent plus de 2 mois.</p>
+    <p class="note-routine">Chaque ingrédient est expliqué simplement dans <a href="#decryptage">Décryptage</a>. Le retour d’une autre amie à peau normale viendra s’ajouter ici.</p>
+    <p class="lien-quiz">Tu ne sais pas quel est ton type de peau ? <a href="#type-de-peau">Fais le point ici</a>.</p>
+  </div></section>
+
+  <section class="page" id="peau-grasse" aria-labelledby="r-g"><div class="conteneur">
+    <ul class="onglets" aria-label="Choisir un type de peau"><li><a href="#peau-normale">Peau normale</a></li><li><a href="#peau-grasse" aria-current="page">Peau grasse</a></li><li><a href="#peau-mixte">Peau mixte</a></li><li><a href="#peau-seche">Peau sèche</a></li></ul>
+    <h2 class="titre-section" id="r-g">Routines pour peau grasse</h2>
+    <p class="sous-titre">Deux routines racontées par deux amies, avec leur accord et sans nom. Ce sont des expériences personnelles, pas des conseils médicaux : chaque peau réagit différemment.</p>
+    <h3 class="titre-temo">Routine 1 : une amie, peau grasse</h3>
+    <p class="note-temo">Depuis plus de 6 mois.</p>
+    <div class="routine"><div class="moment"><h3>Le matin</h3><ol class="etapes"><li><span class="role">Nettoyer</span><span class="produit">La Roche-Posay, Effaclar</span></li><li><span class="role">Sérum</span><span class="produit">Aromazone, sérum vitamine B12</span></li><li><span class="role">Hydrater</span><span class="produit">Aromazone, baume relipidant <span class="cond">(avoine et céramide NP)</span></span></li><li><span class="role">Protéger</span><span class="produit">Avène, crème solaire</span></li></ol></div><div class="moment"><h3>Le soir</h3><ol class="etapes"><li><span class="role">Démaquiller</span><span class="produit">eau micellaire, pour enlever toute la saleté accumulée</span></li><li><span class="role">Nettoyer</span><span class="produit">La Roche-Posay, Effaclar</span></li><li><span class="role">Sérum</span><span class="produit">Aromazone, sérum vitamine B12</span></li><li><span class="role">Hydrater</span><span class="produit">Aromazone, baume relipidant <span class="cond">(avoine et céramide NP)</span></span></li></ol></div></div>
+    <p class="note-routine"><strong>Une fois par semaine :</strong> exfoliant et masque Noreva.</p>
+    <p class="note-routine"><strong>Budget :</strong> entre 40 et 60 € par mois.</p>
+    <p class="note-routine"><strong>Son conseil :</strong> avoir une routine régulière.</p>
+
+    <h3 class="titre-temo">Routine 2 : une amie, peau grasse, style coréen</h3>
+    <p class="note-temo">Depuis 1 à 3 mois.</p>
+    <div class="routine"><div class="moment"><h3>Le matin</h3><ol class="etapes"><li><span class="role">Nettoyer</span><span class="produit">Centella Ampoule Foam <span class="cond">(1 minute, puis je rince)</span></span></li><li><span class="role">Sérum</span><span class="produit">Anua, glow pad PDRN + hyaluron <span class="cond">(je tapote et laisse sécher)</span></span></li><li><span class="role">Sérum</span><span class="produit">Anua, acide azélaïque 10 % + hyaluron <span class="cond">(je tapote et laisse sécher)</span></span></li><li><span class="role">Hydrater</span><span class="produit">Dr Althea, Acqua marine watery cream <span class="cond">(je masse jusqu’à pénétration)</span></span></li><li><span class="role">Protéger</span><span class="produit">Haruharu Wonder, crème solaire <span class="cond">(j’étale bien)</span></span></li></ol></div><div class="moment"><h3>Le soir</h3><ol class="etapes"><li><span class="role">Nettoyer</span><span class="produit">Centella Ampoule Foam</span></li><li><span class="role">Sérum</span><span class="produit">Anua, glow pad PDRN + hyaluron</span></li><li><span class="role">Hydrater</span><span class="produit">Dr Althea, Acqua marine watery cream</span></li></ol></div></div>
+    <p class="note-routine"><strong>Une fois par semaine, le soir :</strong> huile nettoyante Centella Light cleansing oil, gel nettoyant, exfoliant Retinal Shot de Celimax, puis crème hydratante. Avec une peau sensible, une fois suffit pour ne pas irriter, et il faut bien hydrater le lendemain.</p>
+    <p class="note-routine"><strong>À ne pas oublier :</strong> le cou, et la crème solaire en quantité généreuse.</p>
+    <p class="note-routine"><strong>Budget :</strong> produits à 14–25 € environ, achetés en ligne (Notino, YesStyle).</p>
+    <p class="note-routine"><strong>Son conseil :</strong> écouter sa peau et ses besoins : on peut avoir le même type de peau sans avoir les mêmes problèmes. Élaborer sa routine avec un dermatologue ou un coach en skincare, ou au moins bien faire des recherches avant d’utiliser certains produits.</p>
+
+    <p class="note-routine">Ce qui a marché ou non pour chacune est résumé dans <a href="#produits-testes">Produits testés</a>, et chaque ingrédient est expliqué dans <a href="#decryptage">Décryptage</a>.</p>
+    <p class="lien-quiz">Tu ne sais pas quel est ton type de peau ? <a href="#type-de-peau">Fais le point ici</a>.</p>
+  </div></section>
+
+  <section class="page" id="peau-mixte" aria-labelledby="r-m"><div class="conteneur">
+    <ul class="onglets" aria-label="Choisir un type de peau"><li><a href="#peau-normale">Peau normale</a></li><li><a href="#peau-grasse">Peau grasse</a></li><li><a href="#peau-mixte" aria-current="page">Peau mixte</a></li><li><a href="#peau-seche">Peau sèche</a></li></ul>
+    <h2 class="titre-section" id="r-m">Routines pour peau mixte</h2>
+    <p class="sous-titre">Deux routines racontées par deux amies, avec leur accord et sans nom. Ce sont des expériences personnelles, pas des conseils médicaux : chaque peau réagit différemment.</p>
+    <h3 class="titre-temo">Routine 1 : une amie, peau mixte</h3>
+    <p class="note-temo">Depuis 3 à 6 mois. Étapes dans l’ordre.</p>
+    <div class="routine"><div class="moment"><h3>Le matin</h3><ol class="etapes"><li><span class="role">Nettoyer</span><span class="produit">Mixa, nettoyant visage au squalane</span></li><li><span class="role">Sérum</span><span class="produit">Aromazone, sérum niacinamide + vitamine C</span></li><li><span class="role">Hydrater</span><span class="produit">Mixa, crème vitamine C + niacinamide</span></li><li><span class="role">Protéger</span><span class="produit">Eucerin, crème solaire</span></li></ol></div><div class="moment"><h3>Le soir</h3><ol class="etapes"><li><span class="role">Nettoyer</span><span class="produit">Mixa, nettoyant visage au squalane</span></li><li><span class="role">Sérum</span><span class="produit">Aromazone, sérum niacinamide + vitamine C</span></li><li><span class="role">Hydrater</span><span class="produit">Mixa, crème vitamine C + niacinamide</span></li></ol></div></div>
+    <p class="note-routine"><strong>Une fois par semaine, le soir :</strong> exfoliant Garnier charbon + BHA.</p>
+    <p class="note-routine"><strong>Budget :</strong> entre 40 et 60 € par mois.</p>
+    <p class="note-routine"><strong>Son conseil :</strong> bien écouter sa peau.</p>
+
+    <h3 class="titre-temo">Routine 2 : une amie, peau mixte</h3>
+    <p class="note-temo">Depuis plus de 6 mois. Étapes dans l’ordre.</p>
+    <div class="routine"><div class="moment"><h3>Le matin</h3><ol class="etapes"><li><span class="role">Nettoyer</span><span class="produit">CeraVe, Blemish Control Cleanser</span></li><li><span class="role">Tonique</span><span class="produit">Cosmia</span></li><li><span class="role">Sérum</span><span class="produit">Aromazone, acide azélaïque</span></li><li><span class="role">Hydrater</span><span class="produit">CeraVe, Moisturising Lotion</span></li><li><span class="role">Protéger</span><span class="produit">Vichy, crème hydratante à SPF intégré, gamme Minéral</span></li></ol></div><div class="moment"><h3>Le soir</h3><ol class="etapes"><li><span class="role">Nettoyer</span><span class="produit">CeraVe, Blemish Control Cleanser</span></li><li><span class="role">Tonique</span><span class="produit">Cosmia</span></li><li><span class="role">Sérum</span><span class="produit">Aromazone, acide azélaïque</span></li><li><span class="role">Hydrater</span><span class="produit">CeraVe, Moisturising Lotion</span></li></ol></div></div>
+    <p class="note-routine"><strong>Budget :</strong> moins de 20 € par mois.</p>
+
+    <p class="note-routine">Ce qui a marché ou non pour chacune est résumé dans <a href="#produits-testes">Produits testés</a>, et chaque ingrédient est expliqué dans <a href="#decryptage">Décryptage</a>.</p>
+    <p class="lien-quiz">Tu ne sais pas quel est ton type de peau ? <a href="#type-de-peau">Fais le point ici</a>.</p>
+  </div></section>
+
+  <section class="page" id="peau-seche" aria-labelledby="r-s"><div class="conteneur">
+    <ul class="onglets" aria-label="Choisir un type de peau"><li><a href="#peau-normale">Peau normale</a></li><li><a href="#peau-grasse">Peau grasse</a></li><li><a href="#peau-mixte">Peau mixte</a></li><li><a href="#peau-seche" aria-current="page">Peau sèche</a></li></ul>
+    <h2 class="titre-section" id="r-s">Routines pour peau sèche</h2>
+    <p class="sous-titre">Deux routines racontées par deux amies, avec leur accord et sans nom. Ce sont des expériences personnelles, pas des conseils médicaux : chaque peau réagit différemment.</p>
+    <h3 class="titre-temo">Routine 1 : une amie, peau sèche</h3>
+    <p class="note-temo">Depuis 3 à 6 mois.</p>
+    <div class="routine"><div class="moment"><h3>Le matin</h3><ol class="etapes"><li><span class="role">Nettoyer</span><span class="produit">CeraVe, crème lavante hydratante peaux normales à sèches</span></li><li><span class="role">Hydrater</span><span class="produit">Aromazone, sérum d’acide hyaluronique <span class="cond">(sur peau humide, bien l’appliquer pour qu’il pénètre)</span></span></li><li><span class="role">Sérum</span><span class="produit">The Inkey List, niacinamide <span class="cond">(sérum traitant le sébum)</span></span></li><li><span class="role">Réparer</span><span class="produit">Weleda, Skin Food crème nourrissante <span class="cond">(je la réchauffe entre les mains avant de l’appliquer)</span></span></li><li><span class="role">Protéger</span><span class="produit">La Roche-Posay, crème solaire</span></li></ol></div><div class="moment"><h3>Le soir</h3><ol class="etapes"><li><span class="role">Nettoyer</span><span class="produit">CeraVe, crème lavante hydratante peaux normales à sèches</span></li><li><span class="role">Hydrater</span><span class="produit">Aromazone, sérum d’acide hyaluronique <span class="cond">(sur peau humide)</span></span></li><li><span class="role">Sérum</span><span class="produit">The Inkey List, niacinamide</span></li><li><span class="role">Réparer</span><span class="produit">Weleda, Skin Food crème nourrissante</span></li></ol></div></div>
+    <p class="note-routine"><strong>Budget :</strong> entre 40 et 60 € par mois.</p>
+    <p class="note-routine"><strong>Son conseil :</strong> bien appliquer les produits, bien s’hydrater et boire beaucoup d’eau.</p>
+
+    <h3 class="titre-temo">Routine 2 : une amie, peau sèche</h3>
+    <p class="note-temo">Depuis 1 à 3 mois. Étapes dans l’ordre.</p>
+    <div class="routine"><div class="moment"><h3>Le matin</h3><ol class="etapes"><li><span class="role">Nettoyer</span><span class="produit">Yafa Beauty, savon nettoyant coup d’éclat</span></li><li><span class="role">Hydrater</span><span class="produit">Yafa Beauty, Baby Face crème de jour</span></li><li><span class="role">Sérum</span><span class="produit">The Ordinary, niacinamide</span></li><li><span class="role">Apaiser</span><span class="produit">Effaclar, crème pour les boutons</span></li><li><span class="role">Protéger</span><span class="produit">Eucerin, crème solaire</span></li></ol></div><div class="moment"><h3>Le soir</h3><ol class="etapes"><li><span class="role">Nettoyer</span><span class="produit">Yafa Beauty, savon nettoyant coup d’éclat</span></li><li><span class="role">Hydrater</span><span class="produit">Yafa Beauty, Baby Face crème de nuit</span></li><li><span class="role">Sérum</span><span class="produit">The Ordinary, niacinamide</span></li></ol></div></div>
+    <p class="note-routine"><strong>Budget :</strong> entre 40 et 60 € par mois.</p>
+    <p class="note-routine"><strong>Son conseil :</strong> bien s’hydrater et trouver des produits hydratants.</p>
+
+    <p class="note-routine">Ce qui a marché ou non pour chacune est résumé dans <a href="#produits-testes">Produits testés</a>, et chaque ingrédient est expliqué dans <a href="#decryptage">Décryptage</a>.</p>
+    <p class="lien-quiz">Tu ne sais pas quel est ton type de peau ? <a href="#type-de-peau">Fais le point ici</a>.</p>
+  </div></section>
+
+  <section class="page" id="decryptage" aria-labelledby="titre-decryptage">
+    <div class="conteneur">
+      <h2 class="titre-section" id="titre-decryptage">Décryptage : ce qu’il y a dans tes produits</h2>
+      <p class="sous-titre">Chaque ingrédient des produits que mes amies et moi utilisons, expliqué sans jargon. Ce sont des explications générales : la composition exacte d’un produit se vérifie sur son emballage ou sur le site de la marque.</p>
+      <div class="grille-fiches">
+        <article class="ingredient">
+          <header>
+            <h3>Niacinamide <span class="technique">aussi appelée vitamine B3</span></h3>
+            <p class="resume">Un actif doux, très présent dans les soins pour peaux à imperfections.</p>
+          </header>
+          <dl class="details">
+            <dt>Ça sert à</dt><dd>réguler le sébum, affiner le grain de peau, atténuer les rougeurs.</dd>
+            <dt>Pour quelle peau</dt><dd>grasse, mixte, à imperfections ; en général bien tolérée.</dd>
+            <dt>Ce que dit la science</dt><dd>bonne preuve.</dd>
+            <dt>Dans nos produits</dt><dd>ma lotion tonique Aromazone (5 %) ; les sérums Aromazone (avec vitamine C), The Ordinary et The Inkey List ; la crème Mixa (avec vitamine C).</dd>
+          </dl>
+          <h4>Attention</h4>
+          <ul><li>Des picotements sont possibles au début : fais un test.</li><li>Arrête si des rougeurs persistent.</li></ul>
+        </article>
+        <article class="ingredient">
+          <header>
+            <h3>Vitamine C <span class="technique">souvent écrite « acide ascorbique »</span></h3>
+            <p class="resume">Un antioxydant utilisé le matin pour donner de l’éclat et unifier le teint.</p>
+          </header>
+          <dl class="details">
+            <dt>Ça sert à</dt><dd>éclat, taches, protection contre les agressions de la pollution et des UV (elle ne remplace pas la crème solaire).</dd>
+            <dt>Pour quelle peau</dt><dd>peau terne, taches ; à introduire doucement sur peau sensible.</dd>
+            <dt>Ce que dit la science</dt><dd>bonne preuve comme antioxydant ; l’effet dépend de la forme et de la conservation du produit.</dd>
+            <dt>Dans nos produits</dt><dd>mon sérum Aromazone 10 % + astaxanthine ; le sérum Aromazone niacinamide + vitamine C et la crème Mixa d’une amie à peau mixte.</dd>
+          </dl>
+          <h4>Attention</h4>
+          <ul><li>Elle peut irriter ou fragiliser une peau sensible : si ça pique ou tiraille, arrête.</li><li>Garde-la à l’abri de l’air et de la lumière.</li><li>Termine toujours par une crème solaire.</li></ul>
+        </article>
+        <article class="ingredient">
+          <header>
+            <h3>Acide hyaluronique <span class="technique">un « aimant à eau »</span></h3>
+            <p class="resume">Il retient l’eau dans les couches superficielles de la peau.</p>
+          </header>
+          <dl class="details">
+            <dt>Ça sert à</dt><dd>hydrater et repulper la peau.</dd>
+            <dt>Pour quelle peau</dt><dd>toutes les peaux, y compris grasses mais déshydratées.</dd>
+            <dt>Ce que dit la science</dt><dd>solide pour l’hydratation de surface.</dd>
+            <dt>Dans nos produits</dt><dd>mon sérum Aromazone, et aussi dans ma lotion tonique ; le sérum Aromazone d’une amie à peau sèche ; le glow pad et le sérum Anua.</dd>
+          </dl>
+          <h4>Attention</h4>
+          <ul><li>Applique-le sur une peau légèrement humide.</li><li>S’il fait tirailler, ajoute une crème par-dessus.</li></ul>
+        </article>
+        <article class="ingredient">
+          <header>
+            <h3>Acide azélaïque <span class="technique">un acide doux</span></h3>
+            <p class="resume">Un acide utilisé contre les imperfections et les rougeurs.</p>
+          </header>
+          <dl class="details">
+            <dt>Ça sert à</dt><dd>calmer l’inflammation, limiter les boutons et les marques.</dd>
+            <dt>Pour quelle peau</dt><dd>mixte, grasse, à imperfections.</dd>
+            <dt>Ce que dit la science</dt><dd>bonne preuve ; les produits en vente libre sont en général moins concentrés que ceux prescrits par un médecin.</dd>
+            <dt>Dans nos produits</dt><dd>le sérum Aromazone d’une amie à peau mixte ; le sérum Anua d’une amie à peau grasse.</dd>
+          </dl>
+          <h4>Attention</h4>
+          <ul><li>Des picotements sont possibles au début.</li><li>Enceinte ou allaitante : demande l’avis d’un professionnel de santé.</li></ul>
+        </article>
+        <article class="ingredient">
+          <header>
+            <h3>Acide salicylique <span class="technique">le BHA</span></h3>
+            <p class="resume">Un exfoliant qui travaille dans les pores.</p>
+          </header>
+          <dl class="details">
+            <dt>Ça sert à</dt><dd>désobstruer les pores, atténuer points noirs et imperfections légères.</dd>
+            <dt>Pour quelle peau</dt><dd>grasse, mixte.</dd>
+            <dt>Ce que dit la science</dt><dd>bonne preuve sur les imperfections légères.</dd>
+            <dt>Dans nos produits</dt><dd>l’exfoliant Garnier charbon + BHA, une fois par semaine le soir, chez une amie à peau mixte.</dd>
+          </dl>
+          <h4>Attention</h4>
+          <ul><li>Il peut assécher : ne le multiplie pas avec d’autres exfoliants.</li><li>Crème solaire indispensable le lendemain.</li></ul>
+        </article>
+        <article class="ingredient">
+          <header>
+            <h3>Rétinal <span class="technique">un dérivé de la vitamine A</span></h3>
+            <p class="resume">Un actif puissant, cousin du rétinol.</p>
+          </header>
+          <dl class="details">
+            <dt>Ça sert à</dt><dd>accélérer le renouvellement de la peau, affiner le grain, aider contre les imperfections.</dd>
+            <dt>Pour quelle peau</dt><dd>peaux habituées aux actifs ; pas pour débuter.</dd>
+            <dt>Ce que dit la science</dt><dd>bonne preuve, mais l’irritation est fréquente.</dd>
+            <dt>Dans nos produits</dt><dd>le Retinal Shot de Celimax, utilisé une fois par semaine par une amie à peau grasse.</dd>
+          </dl>
+          <h4>Attention</h4>
+          <ul><li>Commence doucement, une à deux fois par semaine.</li><li>Crème solaire obligatoire ; déconseillé pendant la grossesse.</li></ul>
+        </article>
+        <article class="ingredient">
+          <header>
+            <h3>Panthénol <span class="technique">la vitamine B5</span></h3>
+            <p class="resume">Un ingrédient qui apaise et soutient la barrière de la peau.</p>
+          </header>
+          <dl class="details">
+            <dt>Ça sert à</dt><dd>calmer, hydrater, réparer une peau irritée.</dd>
+            <dt>Pour quelle peau</dt><dd>toutes les peaux, surtout irritées ou qui réagissent.</dd>
+            <dt>Ce que dit la science</dt><dd>preuve modérée.</dd>
+            <dt>Dans nos produits</dt><dd>mon Cicaplast Gel B5, quand j’ai quelques boutons.</dd>
+          </dl>
+          <h4>Attention</h4>
+          <ul><li>Il apaise, mais ne traite pas l’acné.</li><li>Boutons qui persistent : avis d’un pharmacien ou d’un médecin.</li></ul>
+        </article>
+        <article class="ingredient">
+          <header>
+            <h3>Céramides <span class="technique">les « ciments » de la peau</span></h3>
+            <p class="resume">Des lipides naturellement présents dans la peau.</p>
+          </header>
+          <dl class="details">
+            <dt>Ça sert à</dt><dd>renforcer la barrière cutanée et limiter la perte d’eau.</dd>
+            <dt>Pour quelle peau</dt><dd>toutes les peaux, surtout sèches ou fragilisées.</dd>
+            <dt>Ce que dit la science</dt><dd>preuve modérée pour soutenir la barrière.</dd>
+            <dt>Dans nos produits</dt><dd>mon gel nettoyant CeraVe ; le baume relipidant Aromazone (céramide NP) ; la crème lavante et la Moisturising Lotion CeraVe d’amies.</dd>
+          </dl>
+          <h4>Attention</h4>
+          <ul><li>Rien de particulier : une formule qui respecte la peau, à vérifier produit par produit.</li></ul>
+        </article>
+        <article class="ingredient">
+          <header>
+            <h3>Avoine <span class="technique">colloïdale ou en extrait</span></h3>
+            <p class="resume">Une céréale douce utilisée dans les crèmes pour peaux sèches.</p>
+          </header>
+          <dl class="details">
+            <dt>Ça sert à</dt><dd>apaiser les tiraillements et hydrater.</dd>
+            <dt>Pour quelle peau</dt><dd>sèche, sensible.</dd>
+            <dt>Ce que dit la science</dt><dd>preuve modérée pour apaiser.</dd>
+            <dt>Dans nos produits</dt><dd>le baume relipidant Aromazone (avoine et céramide NP).</dd>
+          </dl>
+          <h4>Attention</h4>
+          <ul><li>Fais un test si tu es allergique aux céréales.</li></ul>
+        </article>
+        <article class="ingredient">
+          <header>
+            <h3>Zinc <span class="technique">un oligo-élément</span></h3>
+            <p class="resume">Un minéral ajouté dans certains soins pour peaux à imperfections.</p>
+          </header>
+          <dl class="details">
+            <dt>Ça sert à</dt><dd>aider à contrôler le sébum et apaiser.</dd>
+            <dt>Pour quelle peau</dt><dd>grasse, à imperfections.</dd>
+            <dt>Ce que dit la science</dt><dd>preuve plus limitée en cosmétique que pour la niacinamide.</dd>
+            <dt>Dans nos produits</dt><dd>ma lotion tonique Aromazone.</dd>
+          </dl>
+          <h4>Attention</h4>
+          <ul><li>Ne remplace pas un traitement prescrit.</li></ul>
+        </article>
+        <article class="ingredient">
+          <header>
+            <h3>Astaxanthine <span class="technique">un antioxydant naturel</span></h3>
+            <p class="resume">Un pigment extrait d’algues, ajouté à certains sérums.</p>
+          </header>
+          <dl class="details">
+            <dt>Ça sert à</dt><dd>compléter l’action d’un antioxydant comme la vitamine C.</dd>
+            <dt>Pour quelle peau</dt><dd>toutes les peaux.</dd>
+            <dt>Ce que dit la science</dt><dd>preuve limitée sur la peau.</dd>
+            <dt>Dans nos produits</dt><dd>mon sérum vitamine C Aromazone.</dd>
+          </dl>
+          <h4>Attention</h4>
+          <ul><li>Surtout un « plus » : ne compte pas sur lui seul.</li></ul>
+        </article>
+        <article class="ingredient">
+          <header>
+            <h3>Crème solaire <span class="technique">filtres UV, SPF</span></h3>
+            <p class="resume">L’étape la plus importante du matin, quel que soit le type de peau.</p>
+          </header>
+          <dl class="details">
+            <dt>Ça sert à</dt><dd>protéger de ce qui abîme la peau et fonce les marques.</dd>
+            <dt>Pour quelle peau</dt><dd>toutes les peaux ; des textures légères existent pour les peaux grasses.</dd>
+            <dt>Ce que dit la science</dt><dd>solide.</dd>
+            <dt>Dans nos produits</dt><dd>Avène (la mienne et celle d’une amie), Haruharu Wonder, Eucerin, La Roche-Posay, Vichy (gamme Minéral).</dd>
+          </dl>
+          <h4>Attention</h4>
+          <ul><li>Mets-en une quantité suffisante, sinon la protection baisse.</li><li>Réapplique toutes les 2 heures en cas d’exposition prolongée.</li></ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="produits-testes" aria-labelledby="titre-testes">
+    <div class="conteneur">
+      <h2 class="titre-section" id="titre-testes">Produits testés</h2>
+      <p class="sous-titre">Mon avis honnête sur les produits de ma routine, ceux que j’utilise depuis plus d’un an. Ce sont mes impressions, pas des conseils médicaux. Les ingrédients sont expliqués dans <a href="#decryptage">Décryptage</a>.</p>
+
+      <div class="grille-fiches">
+        <article class="ingredient">
+          <header>
+            <p class="technique">CeraVe</p>
+            <h3>Gel nettoyant peaux grasses à normales</h3>
+            <p class="resume">Nettoyer, matin et soir</p>
+          </header>
+          <dl class="details">
+            <dt>Ce que j’aime</dt><dd>il mousse peu, ne tire pas, sans alcool ; un flacon de 473 ml dure environ 5 mois</dd>
+            <dt>Prix indicatif</dt><dd>environ 12 € (473 ml), acheté en pharmacie il y a 2 mois</dd>
+            <dt>Où l’acheter</dt><dd>en pharmacie ou sur le site de la marque</dd>
+            <dt>Je le rachèterais</dt><dd>oui</dd>
+          </dl>
+        </article>
+        <article class="ingredient">
+          <header>
+            <p class="technique">Aromazone</p>
+            <h3>Lotion tonique niacinamide 5 % + zinc + acide hyaluronique</h3>
+            <p class="resume">Tonique, matin et soir</p>
+          </header>
+          <dl class="details">
+            <dt>Ce que j’aime</dt><dd>facile à appliquer, elle pénètre bien dans la peau</dd>
+          </dl>
+        </article>
+        <article class="ingredient">
+          <header>
+            <p class="technique">Aromazone</p>
+            <h3>Sérum concentré d’acide hyaluronique</h3>
+            <p class="resume">Hydrater, matin et soir (je le laisse sécher)</p>
+          </header>
+          <dl class="details">
+            <dt>À savoir</dt><dd>il faut l’appliquer sur une peau humide</dd>
+          </dl>
+        </article>
+        <article class="ingredient">
+          <header>
+            <p class="technique">Aromazone</p>
+            <h3>Sérum concentré vitamine C 10 % + astaxanthine</h3>
+            <p class="resume">Traiter, matin et soir</p>
+          </header>
+          <dl class="details">
+            <dt>À savoir</dt><dd>la peau peut peler pendant les premiers jours d’utilisation</dd>
+          </dl>
+        </article>
+        <article class="ingredient">
+          <header>
+            <p class="technique">Avène</p>
+            <h3>Cleanance Aqua-gel matifiant</h3>
+            <p class="resume">Matifier, matin et soir</p>
+          </header>
+          <dl class="details">
+            <dt>Ce que j’aime</dt><dd>il hydrate bien</dd>
+          </dl>
+        </article>
+        <article class="ingredient">
+          <header>
+            <p class="technique">La Roche-Posay</p>
+            <h3>Cicaplast Gel B5</h3>
+            <p class="resume">Apaiser, si j’ai quelques boutons</p>
+          </header>
+          <dl class="details">
+            <dt>Ce que j’aime</dt><dd>il pénètre bien sur la peau et il est facile à appliquer</dd>
+          </dl>
+        </article>
+        <article class="ingredient">
+          <header>
+            <p class="technique">Avène</p>
+            <h3>Cleanance anti-imperfections (crème solaire)</h3>
+            <p class="resume">Protéger, le matin</p>
+          </header>
+          <dl class="details">
+            <dt>Ce que j’aime</dt><dd>très bien : elle pénètre bien et ne laisse pas de film blanc sur la peau</dd>
+          </dl>
+        </article>
+      </div>
+
+      <aside class="avis-amies" aria-label="Ce qui revient chez mes amies">
+        <strong>Ce qui revient chez mes amies</strong>
+        <ul>
+          <li>Hydrater matin et soir, même avec une peau grasse.</li>
+          <li>Rester simple : peu de produits bien choisis plutôt que beaucoup.</li>
+          <li>Écouter sa peau et arrêter ce qui l’irrite.</li>
+          <li>Boire beaucoup d’eau.</li>
+        </ul>
+        <small>Résumé anonyme de 9 réponses, sans citation.</small>
+      </aside>
+    </div>
+  </section>
+
+  <section class="page" id="a-propos" aria-labelledby="titre-apropos">
+    <div class="conteneur">
+      <h2 class="titre-section" id="titre-apropos">Qui est derrière Sans Filtre ?</h2>
+      <p class="sous-titre">Une étudiante qui teste, compare et partage ce qu’elle apprend, avec l’accord de ses amies quand elles racontent leur expérience. Ici, on préfère le vrai au parfait.</p>
+      <h3 class="titre-temo" id="transparence">Ce que Sans Filtre s’engage à faire</h3>
+      <ul class="promesses">
+        <li><strong>Dire ce qui est testé</strong>Un produit est présenté comme testé uniquement si je l’ai réellement utilisé.</li>
+        <li><strong>Annoncer les partenariats</strong>Tout lien d’affiliation ou produit offert sera indiqué clairement.</li>
+        <li><strong>Dater les prix</strong>Les prix sont indicatifs et toujours accompagnés de leur date de mise à jour.</li>
+        <li><strong>Respecter ta vie privée</strong>Pas de compte, pas de traqueur inutile, aucune donnée sensible collectée.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="page" id="mentions-legales" aria-labelledby="titre-ml">
+    <div class="conteneur">
+      <h2 class="titre-section" id="titre-ml">Mentions légales</h2>
+      <h3 class="titre-temo">Éditrice du site</h3>
+      <p class="sous-titre">Sans Filtre est un site personnel et non commercial, édité par Ramatoulaye NDIAYE, qui en est aussi la directrice de la publication. Contact : <a href="mailto:tamarandiaye365@gmail.com">tamarandiaye365@gmail.com</a>.</p>
+      <h3 class="titre-temo">Hébergeur</h3>
+      <p class="sous-titre">GitHub Pages, service de GitHub, Inc. (San Francisco, États-Unis), <a href="https://pages.github.com" target="_blank" rel="noopener noreferrer">pages.github.com</a>. <span class="a-completer">Adresse postale à vérifier sur le site de GitHub avant publication.</span></p>
+      <h3 class="titre-temo">Contenus et santé</h3>
+      <p class="sous-titre">Les contenus de ce site sont informatifs. Ils reposent sur des expériences personnelles et ne remplacent pas l’avis d’un médecin, d’un dermatologue ou d’un pharmacien. En cas de doute ou de symptôme persistant, consulte un professionnel de santé.</p>
+      <h3 class="titre-temo">Produits, marques et liens</h3>
+      <p class="sous-titre">Les marques citées appartiennent à leurs propriétaires. Les avis sont personnels. À ce jour, aucun lien d’affiliation ni partenariat : si cela change, ce sera indiqué clairement à côté du produit concerné.</p>
+      <h3 class="titre-temo">Témoignages</h3>
+      <p class="sous-titre">Les retours de mes amies sont publiés avec l’accord de chacune et sans nom. Si l’une d’elles souhaite modifier ou retirer son témoignage, elle peut me le demander à l’adresse de contact ci-dessus.</p>
+      <h3 class="titre-temo">Propriété intellectuelle</h3>
+      <p class="sous-titre">Les textes et les illustrations de ce site sont la propriété de l’éditrice. Toute reproduction sans accord préalable est interdite.</p>
+    </div>
+  </section>
+
+  <section class="page" id="confidentialite" aria-labelledby="titre-conf">
+    <div class="conteneur">
+      <h2 class="titre-section" id="titre-conf">Politique de confidentialité</h2>
+      <p class="note-temo">Dernière mise à jour : 5 novembre 2026.</p>
+      <h3 class="titre-temo">En bref</h3>
+      <p class="sous-titre">Ce site ne demande aucun compte, n’a aucun formulaire, n’utilise aucun cookie de suivi et n’affiche aucune publicité. Il ne collecte aucune donnée personnelle.</p>
+      <h3 class="titre-temo">Le questionnaire « type de peau »</h3>
+      <p class="sous-titre">Tes réponses restent sur ton appareil. Elles ne sont ni envoyées, ni enregistrées, ni conservées.</p>
+      <h3 class="titre-temo">Données techniques</h3>
+      <p class="sous-titre">Comme tout site, l’hébergeur peut conserver temporairement des journaux techniques (par exemple l’adresse IP) pour des raisons de sécurité. Je n’y ai pas accès à des fins de suivi. Le site n’utilise pas de service de mesure d’audience ni de police chargée depuis un serveur tiers.</p>
+      <h3 class="titre-temo">Liens vers d’autres sites</h3>
+      <p class="sous-titre">Les liens vers les marques et les boutiques mènent vers des sites extérieurs, qui ont leur propre politique de confidentialité.</p>
+      <h3 class="titre-temo">Me contacter, tes droits</h3>
+      <p class="sous-titre">Si tu m’écris à <a href="mailto:tamarandiaye365@gmail.com">tamarandiaye365@gmail.com</a>, j’utilise ton adresse uniquement pour te répondre, et je ne la conserve pas plus longtemps que nécessaire. Tu peux demander l’accès, la rectification ou la suppression de tes données à tout moment. Tu peux aussi contacter la CNIL (cnil.fr) si tu estimes que tes droits ne sont pas respectés.</p>
+      <h3 class="titre-temo">Témoignages</h3>
+      <p class="sous-titre">Les témoignages sont anonymes, publiés avec l’accord de chaque personne, et retirés sur simple demande.</p>
+    </div>
+  </section>
+
+</main>
+
+
+<footer class="pied">
+  <div class="conteneur">
+    <a class="logo" href="#accueil">Sans Filtre</a>
+    <ul>
+      <li><a href="#mentions-legales">Mentions légales</a></li>
+      <li><a href="#confidentialite">Politique de confidentialité</a></li>
+      <li><a href="#transparence">Transparence et affiliation</a></li>
+    </ul>
+    <p class="avertissement">Les contenus de ce site sont informatifs et ne remplacent pas l’avis d’un professionnel de santé. En cas de doute ou de symptôme persistant, consulte un médecin ou un pharmacien.</p>
+  </div>
+</footer>
+
+<script>
+/* Menu mobile : ouvre et ferme la navigation */
+(function(){
+  var bouton=document.querySelector('.btn-menu');
+  var nav=document.getElementById('nav');
+  if(!bouton||!nav)return;
+  bouton.addEventListener('click',function(){
+    var ouvert=nav.classList.toggle('ouvert');
+    bouton.setAttribute('aria-expanded',String(ouvert));
+  });
+  nav.addEventListener('click',function(e){
+    if(e.target.tagName==='A'){nav.classList.remove('ouvert');bouton.setAttribute('aria-expanded','false');}
+  });
+})();
+</script>
+<script>
+/* Navigation par onglets : une seule page visible à la fois, selon l’adresse (#...) */
+(function(){
+  var pages=[].slice.call(document.querySelectorAll('.page'));
+  var liens=[].slice.call(document.querySelectorAll('.nav a'));
+  function route(){
+    var h=decodeURIComponent(location.hash.slice(1)),id='accueil',cible=null;
+    pages.forEach(function(p){if(p.id===h)id=h;});
+    pages.forEach(function(p){var on=p.id===id;p.classList.toggle('actif',on);if(on)cible=p;});
+    liens.forEach(function(a){
+      var groupe=a.getAttribute('data-groupe')==='peau'&&id.indexOf('peau-')===0;
+      if(a.getAttribute('href')==='#'+id||groupe){a.setAttribute('aria-current','page');}else{a.removeAttribute('aria-current');}
+    });
+    window.scrollTo(0,0);
+    var t=cible&&cible.querySelector('h1,h2');
+    if(t){t.setAttribute('tabindex','-1');t.focus({preventScroll:true});}
+  }
+  window.addEventListener('hashchange',route);
+  route();
+})();
+</script>
+
+<script>
+/* Questionnaire type de peau : aucun envoi de données, tout reste dans le navigateur */
+(function(){
+  var T={n:['Peau normale','peau-normale'],g:['Peau grasse','peau-grasse'],m:['Peau mixte','peau-mixte'],s:['Peau sèche','peau-seche']};
+  var Q=[
+    {q:'Ton visage brille-t-il au cours de la journée ?',o:[['Non, il reste plutôt mat','ns'],['Un peu, seulement par endroits','m'],['Oui, presque partout','g'],['Non, et il tiraille parfois','s']]},
+    {q:'Quelles zones de ton visage brillent le plus ?',o:[['Aucune en particulier','ns'],['Le front, le nez et le menton','m'],['Tout le visage, joues comprises','g']]},
+    {q:'Comment sont tes joues ?',o:[['Confortables, ni grasses ni sèches','n'],['Normales ou un peu sèches','m'],['Brillantes ou grasses','g'],['Sèches, parfois avec des petites plaques','s']]},
+    {q:'Ta peau tiraille-t-elle après le nettoyage ?',o:[['Non, jamais','ng'],['Oui, souvent','s'],['Parfois, surtout sur les joues','m'],['Non, elle redevient vite grasse','g']]},
+    {q:'Tes pores sont-ils particulièrement visibles ?',o:[['Peu visibles','ns'],['Surtout sur le nez et le front','m'],['Visibles sur tout le visage','g']]}
+  ];
+  var btn=document.getElementById('ouvrir-quiz'),box=document.getElementById('quiz'),zone=document.getElementById('quiz-corps'),i=0,sc={};
+  if(!btn||!box||!zone)return;
+  function focaliser(){var t=zone.querySelector('legend,h3');if(t){t.setAttribute('tabindex','-1');t.focus();}}
+  function demarrer(){i=0;sc={n:0,g:0,m:0,s:0};afficher();}
+  function afficher(){
+    if(i>=Q.length){fin();return;}
+    var d=Q[i],h='<p class="quiz-etape">Question '+(i+1)+' sur '+Q.length+'</p><fieldset><legend>'+d.q+'</legend>';
+    d.o.forEach(function(o){h+='<button type="button" class="opt" data-c="'+o[1]+'">'+o[0]+'</button>';});
+    zone.innerHTML=h+'</fieldset>';focaliser();
+  }
+  function fin(){
+    var max=Math.max(sc.n,sc.g,sc.m,sc.s),h='<h3>Ton résultat le plus probable</h3>';
+    Object.keys(T).forEach(function(k){if(sc[k]===max){h+='<p class="resultat"><strong>'+T[k][0]+'</strong><a class="btn btn-plein" href="#'+T[k][1]+'">Découvrir ma routine</a></p>';}});
+    h+='<p>Si deux types apparaissent, ta peau est entre les deux. Ce résultat est indicatif et ne remplace pas l’avis d’un dermatologue ou d’un pharmacien.</p><button type="button" class="btn btn-contour" id="recommencer">Recommencer</button>';
+    zone.innerHTML=h;focaliser();
+  }
+  zone.addEventListener('click',function(e){
+    var b=e.target.closest('button');if(!b)return;
+    if(b.id==='recommencer'){demarrer();return;}
+    if(b.classList.contains('opt')){b.getAttribute('data-c').split('').forEach(function(c){sc[c]++;});i++;afficher();}
+  });
+  btn.addEventListener('click',function(){
+    var ouvrir=box.hidden;box.hidden=!ouvrir;btn.setAttribute('aria-expanded',String(ouvrir));
+    if(ouvrir){demarrer();}
+  });
+})();
+</script>
+</body>
+</html>
